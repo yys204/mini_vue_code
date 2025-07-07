@@ -7,7 +7,6 @@ export function createApp(rootComponent){
             const vnode = createVNode(rootComponent)
             // 渲染
             render(vnode, rootContainer)
-
         }
     }
 }
