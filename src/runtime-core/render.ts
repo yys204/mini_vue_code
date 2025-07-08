@@ -1,5 +1,6 @@
 import { isObject } from "../shared/index";
 import { createComponentInstance, setupComponent } from "./components"
+import { ShapeFlags } from "../shared/ShapeFlags"
 export function render(vnode, rootContainer){
     patch(vnode, rootContainer)
 }
@@ -10,9 +11,9 @@ function patch(vnode, rootContainer){
    //不是element 则处理component
    // processElement(vnode, rootContainer)
   console.log(vnode,"vnode");
-  if(typeof vnode.type === "string"){
+  if(vnode.shapeFlag & ShapeFlags.ELEMENT){
     processElement(vnode, rootContainer)
-  }else if(isObject(vnode.type)){
+  }else if(vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT){
     processComponent(vnode, rootContainer)
   }
 }
@@ -21,9 +22,9 @@ function processElement(vnode, rootContainer){
     // 处理element
     const el = (vnode.el = document.createElement(vnode.type))
     const {children, props} = vnode
-    if(typeof children === "string"){
+    if(vnode.shapeFlag & ShapeFlags.TEXT_CHILDREN){
         el.textContent = children
-    }else if(Array.isArray(children)){
+    }else if(vnode.shapeFlag & ShapeFlags.ARRAY_CHILDREN){
         mountChildren(children, el)
     }
     for(const key in props){
