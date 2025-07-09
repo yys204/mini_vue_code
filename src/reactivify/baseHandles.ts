@@ -1,11 +1,11 @@
 import { track,trigger } from "./effect"
 import { reactive, ReactiveFlags, readonly } from "./reactive"
-import { extend, isObject } from "../shared"
+import { extend, isObject } from "../shared/index"
 const get = createGetter()
 const set = createSetter()
 const readonlyGet = createGetter(true)
 const readonlySet = (target,key,value)=>{
-    console.warn(`Set operation on key ${key} failed: target is readonly.`)
+    console.warn(`修改失败: ${JSON.stringify(target)} 的 ${key} 属性，${key} 是只读的`)
     return true
 }
 const shallowReadonlyGet = createGetter(true,true)
