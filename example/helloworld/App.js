@@ -6,7 +6,11 @@ export const App = {
  render(){
     window.self = this
     // ui
-    return h('div', {'class': 'red'}, [h('div', {class: 'green'}, this.name), h('div', {class: 'blue'}, 'hello world')] )
+    return h('div', {'class': 'red',onClick:()=>{
+        console.log("click");
+    }}, [h('div', {class: 'green',onMouseDown:()=>{
+        console.log("mouseDown");
+    }}, this.name), h('div', {class: 'blue'}, 'hello world')] )
  },
 
 

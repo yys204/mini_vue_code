@@ -29,7 +29,14 @@ function processElement(vnode, rootContainer){
     }
     for(const key in props){
         const value = props[key]
-        el.setAttribute(key, value)
+        // 正侧表达式判断，以on开头并且下一个字母为大写的
+        const pertterns = /^on[A-Z]/
+        if(pertterns.test(key)){
+            const event = key.slice(2).toLowerCase()
+            el.addEventListener(event, value)
+        }else{
+            el.setAttribute(key, value)
+        }
     }
     rootContainer.appendChild(el)
 }
