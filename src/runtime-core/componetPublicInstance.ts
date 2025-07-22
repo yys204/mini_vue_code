@@ -1,6 +1,7 @@
 import { hasOwn } from "../shared/index"
 const proxyInstanceMap = {
-    "$el":(i)=>i.vnode.el
+    "$el":(i)=>i.vnode.el,
+    "$slots":(i)=>i.slots
 }
 
 interface ComponentInstance {
