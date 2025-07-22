@@ -1,5 +1,6 @@
-import { h } from '../../lib/guide-mini-vue.esm.js'
+import { h,createTextVNode } from '../../lib/guide-mini-vue.esm.js'
 import { Foo } from './Foo.js'
+
 export const App = {   
     name:"App",
  //.vue 文件
@@ -8,7 +9,7 @@ export const App = {
    const app = h("div",{
     id:"app"
    },"App")
-   const foo = h(Foo,{},{hearder:(age)=>h("p",{},"header"+age),footer:()=>h("p",{},"footer")})
+   const foo = h(Foo,{},{hearder:({age})=>[h("p",{},"header"+age),createTextVNode("你好呀")],footer:()=>h("p",{},"footer")})
    return h("div",{},[app,foo])
  },
 

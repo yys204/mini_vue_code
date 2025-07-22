@@ -1,21 +1,50 @@
 import { isObject } from "../shared/index";
 import { createComponentInstance, setupComponent } from "./components"
 import { ShapeFlags } from "../shared/ShapeFlags"
+import { Fragment, Text } from "./vNode"
 export function render(vnode, rootContainer){
     patch(vnode, rootContainer)
 }
 
 function patch(vnode, rootContainer){
+    const {type,shapeFlag} = vnode
    //todo 判断vnode类型是不是一个element
    //是element 则处理element
    //不是element 则处理component
    // processElement(vnode, rootContainer)
+//    Fragment  -> 只渲染children
+//    Text  -> 只渲染text
+//    component  -> 渲染component
+
+
+switch(type){
+    case Fragment:
+        processFragment(vnode, rootContainer)
+        break;
+    case Text:
+        processText(vnode, rootContainer)
+        break;
+    default:
+        if(shapeFlag & ShapeFlags.ELEMENT){
+            processElement(vnode, rootContainer)
+          }else if(shapeFlag & ShapeFlags.STATEFUL_COMPONENT){
+            processComponent(vnode, rootContainer)
+          }
+        break;
+}
+
   console.log(vnode,"vnode");
-  if(vnode.shapeFlag & ShapeFlags.ELEMENT){
-    processElement(vnode, rootContainer)
-  }else if(vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT){
-    processComponent(vnode, rootContainer)
-  }
+  
+}
+
+function processFragment(vnode, rootContainer){
+    mountChildren(vnode.children, rootContainer)
+}
+
+function processText(vnode, rootContainer){
+    const {children} = vnode
+    const textNode = (vnode.el = document.createTextNode(children))
+    rootContainer.appendChild(textNode)
 }
 
 function processElement(vnode, rootContainer){
